@@ -10,9 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+
+
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -42,14 +45,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/login', name: 'app_login')]
-    public function login(): Response
-    {
-        return $this->render('home/login.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
     #[Route('/profile', name: 'app_profile')]
     public function profile(EntityManagerInterface $entityManager): Response
     {
@@ -61,30 +56,11 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/register', name: 'app_register')]
-    public function register(): Response
-    {
-        return $this->render('home/register.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
     #[Route('/show-index', name: 'app_show_index')]
     public function showIndex(): Response
     {
         return $this->render('home/show-index.html.twig', [
             'controller_name' => 'HomeController',
-        ]);
-    }
-
-    #[Route('/admin', name: 'app_admin')]
-    public function admin(EntityManagerInterface $entityManager): Response
-    {
-        $JobCategory = $entityManager->getRepository(JobCategory::class)->findAll();
-
-        return $this->render('home/admin.html.twig', [
-            'controller_name' => 'HomeController',
-            'job_category' => $JobCategory,
         ]);
     }
 }

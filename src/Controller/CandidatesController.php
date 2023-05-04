@@ -8,18 +8,28 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Candidates;
 use App\Entity\JobCategory;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 
 class CandidatesController extends AbstractController
 {
     #[Route('/candidates', name: 'app_candidates_save')]
-    public function save(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function save(Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $userRepository): Response
     {
-        $candidates = new Candidates;
+        $user = $security->getUser();
+
+        // Get the existing candidate for the user, if it exists
+        $candidate = $userRepository->findOneBy(['user' => $user]);
+
+        // If the candidate doesn't exist, create a new one
+        if (!$candidate) {
+            $candidates = new Candidates();
+        }
+
+
         $data = $request->request->all();
         $jobcategory = $entityManager->getRepository(JobCategory::class)->find($data["job_sector"]);
-        $user = $security->getUser();
 
 
 
